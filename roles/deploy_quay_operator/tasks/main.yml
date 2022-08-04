@@ -1,19 +1,77 @@
 ---
 # tasks file for roles/ocp_create_ns
-- name: Create a k8s namespace
-  k8s:
-    name: sock-shop
-    api_version: v1
-    kind: Namespace
-    state: present
+#- name: Create a k8s namespace
+#  k8s:
+#    name: openshift-storage
+#    api_version: v1
+#    kind: Namespace
+#    state: present
 
 - name: get openshift git deployment repo
   git:
-    repo: https://github.com/HaaikeV/sock-shop-ocp-ws.git
+    repo: https://github.com/adnan-drina/quay-install-cli.git
     dest: /tmp/repo_dump/
     version: main  
 
-- name: Read Definition file
+- name: Create ODF Project from yml
   k8s:
     state: present
-    src: /tmp/repo_dump/deploy/kubernetes/complete-demo.yaml
+    src: /tmp/repo_dump/ODF/odf-namespace.yaml
+
+- name: Create an OperatorGroup from yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/ODF/odf-og.yaml
+
+- name: Create and ODF Subscription from yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/ODF/odf-sub.yaml
+
+- name: Label nodes using shell script
+  ansible.builtin.shell: /tmp/repo_dump/ODF/odf-label-node.sh
+
+- name: Create a StorageSystem from yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/ODF/odf-storagesystem.yaml
+
+- name: Create a Storage Cluster from yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/ODF/odf-storagecluster.yaml
+
+- name: Initialize ODF from yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/ODF/odf-initialization.yaml
+
+- name: Create Quay project from yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/quay-namespace.yaml
+
+- name: Create Quay Subscription from yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/quay-sub.yaml
+
+- name: Create Quay Config Bundle Secret yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/quay-config-bundle-secret.yaml
+
+- name: Deploy Quay Registry from yml
+  k8s:
+    state: present
+    src: /tmp/repo_dump/quay-cr.yaml
+
+- name: Get a list of Quay Routes
+  k8s_info:
+    kind: routes
+  register: quay_routes_output
+
+- debug:
+    var: quay_routes_output
+
+
