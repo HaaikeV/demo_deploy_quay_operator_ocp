@@ -29,7 +29,7 @@
     src: /tmp/repo_dump/ODF/odf-sub.yaml
 
 - name: Label nodes using shell script
-  shell: /tmp/repo_dump/ODF/odf-label-node.sh
+  shell: /tmp/repo_dump/ODF/odf-label-nodes.sh
 
 - name: Create a StorageSystem from yml
   k8s:
