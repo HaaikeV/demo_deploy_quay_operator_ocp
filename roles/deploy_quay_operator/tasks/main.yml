@@ -26,10 +26,10 @@
 - name: Create and ODF Subscription from yml
   k8s:
     state: present
-    src: /tmp/repo_dump/ODF/odf-sub.yaml
+    src: /tmp/repo_dump/ODF/odf-sub.yml
 
 - name: Label nodes using shell script
-  ansible.builtin.shell: /tmp/repo_dump/ODF/odf-label-node.sh
+  shell: /tmp/repo_dump/ODF/odf-label-node.sh
 
 - name: Create a StorageSystem from yml
   k8s:
