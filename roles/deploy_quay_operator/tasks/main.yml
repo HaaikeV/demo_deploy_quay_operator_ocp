@@ -26,7 +26,7 @@
 - name: Create and ODF Subscription from yml
   k8s:
     state: present
-    src: /tmp/repo_dump/ODF/odf-sub.yml
+    src: /tmp/repo_dump/ODF/odf-sub.yaml
 
 - name: Label nodes using shell script
   shell: /tmp/repo_dump/ODF/odf-label-node.sh
