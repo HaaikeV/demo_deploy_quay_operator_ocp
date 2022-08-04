@@ -1,8 +1,8 @@
-- name: Connect and create environment in AWS
+- name: Connect to ocp and create a quay environment
   hosts: localhost
   gather_facts: true
   vars:
    ansible_connection: local
   tasks:
    - include_role:
-       name: ocp_create_ns
+       name: deploy_quay_operator
